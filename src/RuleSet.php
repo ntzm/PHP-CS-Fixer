@@ -212,6 +212,9 @@ final class RuleSet implements RuleSetInterface
                 'method',
                 'property',
             ]],
+            'list_syntax' => [
+                'syntax' => 'short',
+            ],
         ],
         '@PHP71Migration:risky' => [
             '@PHP70Migration:risky' => true,
