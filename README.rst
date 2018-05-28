@@ -887,6 +887,10 @@ Choose from the list of available rules:
 
   The closing ``?>`` tag MUST be omitted from files containing only PHP.
 
+* **no_empty_block**
+
+  There must not be any empty blocks.
+
 * **no_empty_comment** [@Symfony]
 
   There should not be any empty comments.
