@@ -891,6 +891,8 @@ Choose from the list of available rules:
 
   There must not be any empty blocks.
 
+  *Risky rule: risky if the block has side effects.*
+
 * **no_empty_comment** [@Symfony]
 
   There should not be any empty comments.
