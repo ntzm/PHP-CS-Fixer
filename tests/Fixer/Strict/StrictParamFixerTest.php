@@ -75,6 +75,12 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
+    in_Array(1, $a, true);',
+                '<?php
+    in_Array(1, $a);',
+            ],
+            [
+                '<?php
     base64_decode($foo, true);
     base64_decode($foo, false);
     base64_decode($foo, $useStrict);',
@@ -122,24 +128,6 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
                 '<?php
     mb_detect_encoding($foo);',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix56Cases
-     * @requires PHP 5.6
-     */
-    public function testFix56($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix56Cases()
-    {
-        return [
             [
                 '<?php
     use function in_array;

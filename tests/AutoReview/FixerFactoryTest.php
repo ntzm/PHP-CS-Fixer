@@ -60,6 +60,7 @@ final class FixerFactoryTest extends TestCase
 
         return [
             [$fixers['array_indentation'], $fixers['binary_operator_spaces']],
+            [$fixers['array_indentation'], $fixers['align_multiline_comment']],
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
@@ -151,9 +152,11 @@ final class FixerFactoryTest extends TestCase
             [$fixers['ordered_class_elements'], $fixers['space_after_semicolon']],
             [$fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']],
             [$fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']],
+            [$fixers['php_unit_internal_class'], $fixers['final_internal_class']],
             [$fixers['php_unit_fqcn_annotation'], $fixers['php_unit_ordered_covers']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['php_unit_expectation']],
+            [$fixers['phpdoc_add_missing_param_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']],
             [$fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']],
@@ -175,11 +178,14 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_order'], $fixers['phpdoc_separation']],
             [$fixers['phpdoc_order'], $fixers['phpdoc_trim']],
             [$fixers['phpdoc_return_self_reference'], $fixers['no_superfluous_phpdoc_tags']],
+            [$fixers['phpdoc_scalar'], $fixers['phpdoc_to_return_type']],
             [$fixers['phpdoc_separation'], $fixers['phpdoc_trim']],
             [$fixers['phpdoc_summary'], $fixers['phpdoc_trim']],
             [$fixers['phpdoc_to_comment'], $fixers['no_empty_comment']],
             [$fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']],
-            [$fixers['phpdoc_var_without_name'], $fixers['phpdoc_trim']],
+            [$fixers['phpdoc_to_return_type'], $fixers['fully_qualified_strict_types']],
+            [$fixers['phpdoc_to_return_type'], $fixers['no_superfluous_phpdoc_tags']],
+            [$fixers['phpdoc_to_return_type'], $fixers['return_type_declaration']],
             [$fixers['pow_to_exponentiation'], $fixers['binary_operator_spaces']],
             [$fixers['pow_to_exponentiation'], $fixers['method_argument_space']],
             [$fixers['pow_to_exponentiation'], $fixers['native_function_casing']],
@@ -271,7 +277,6 @@ final class FixerFactoryTest extends TestCase
             'method_separation,indentation_type.test',
             'no_empty_statement,multiline_whitespace_before_semicolons.test',
             'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
-            'no_empty_statement,no_singleline_whitespace_before_semicolons.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
             'phpdoc_no_package,phpdoc_order.test',
@@ -279,7 +284,6 @@ final class FixerFactoryTest extends TestCase
             'phpdoc_order,phpdoc_trim.test',
             'phpdoc_separation,phpdoc_trim.test',
             'phpdoc_summary,phpdoc_trim.test',
-            'phpdoc_var_without_name,phpdoc_trim.test',
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);

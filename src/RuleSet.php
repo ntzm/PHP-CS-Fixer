@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 
 /**
@@ -40,7 +41,7 @@ final class RuleSet implements RuleSetInterface
             'line_ending' => true,
             'lowercase_constants' => true,
             'lowercase_keywords' => true,
-            'method_argument_space' => ['ensure_fully_multiline' => true],
+            'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
             'no_break_comment' => true,
             'no_closing_tag' => true,
             'no_spaces_after_function_name' => true,
@@ -168,6 +169,18 @@ final class RuleSet implements RuleSetInterface
             'function_to_constant' => true,
             'is_null' => true,
             'modernize_types_casting' => true,
+            'native_constant_invocation' => [
+                'fix_built_in' => false,
+                'include' => [
+                    'DIRECTORY_SEPARATOR',
+                    'PHP_SAPI',
+                    'PHP_VERSION_ID',
+                ],
+            ],
+            'native_function_invocation' => [
+                'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
+                'scope' => 'namespaced',
+            ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
             'non_printable_character' => [
@@ -176,6 +189,7 @@ final class RuleSet implements RuleSetInterface
             'php_unit_construct' => true,
             'psr4' => true,
             'self_accessor' => true,
+            'set_type_to_cast' => true,
         ],
         '@DoctrineAnnotation' => [
             'doctrine_annotation_array_assignment' => [

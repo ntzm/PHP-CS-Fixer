@@ -48,8 +48,6 @@ use Symfony\Component\Finder\SplFileInfo;
  * {"indent": "    ", "lineEnding": "\n"}
  * --SETTINGS--*
  * {"key": "value"} # optional extension point for custom IntegrationTestCase class
- * --REQUIREMENTS--*
- * {"php": 50600**}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
@@ -204,8 +202,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
      */
     protected function doTest(IntegrationCase $case)
     {
-        if (PHP_VERSION_ID < $case->getRequirement('php')) {
-            $this->markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), PHP_VERSION_ID));
+        if (\PHP_VERSION_ID < $case->getRequirement('php')) {
+            $this->markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), \PHP_VERSION_ID));
         }
 
         $input = $case->getInputCode();

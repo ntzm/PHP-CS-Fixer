@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.11.1/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.12.2/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -84,6 +84,15 @@ Globally (homebrew)
 .. code-block:: bash
 
     $ brew install php-cs-fixer
+
+Locally (PHIVE)
+~~~~~~~~~~~~~~~
+
+Install `PHIVE <https://phar.io>`_ and issue the following command:
+
+.. code-block:: bash
+
+    $ phive install php-cs-fixer # use `--global` for global install
 
 Update
 ------
@@ -123,6 +132,13 @@ You can update ``php-cs-fixer`` through this command:
 .. code-block:: bash
 
     $ brew upgrade php-cs-fixer
+
+Locally (PHIVE)
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ phive update php-cs-fixer
 
 Usage
 -----
@@ -274,7 +290,8 @@ Choose from the list of available rules:
     equals alignment; defaults to ``false``. DEPRECATED: use options
     ``operators`` and ``default`` instead
   - ``default`` (``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``,
-    ``'single_space'``, ``null``): default fix strategy; defaults to ``'single_space'``
+    ``'no_space'``, ``'single_space'``, ``null``): default fix strategy; defaults to
+    ``'single_space'``
   - ``operators`` (``array``): dictionary of ``binary operator`` => ``fix strategy``
     values that differ from the default strategy; defaults to ``[]``
 
@@ -789,9 +806,13 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``ensure_fully_multiline`` (``bool``): ensure every argument of a multiline
-    argument list is on its own line; defaults to ``false``
+    argument list is on its own line; defaults to ``false``. DEPRECATED: use
+    option ``on_multiline`` instead
   - ``keep_multiple_spaces_after_comma`` (``bool``): whether keep multiple spaces
     after comma; defaults to ``false``
+  - ``on_multiline`` (``'ensure_fully_multiline'``, ``'ensure_single_line'``, ``'ignore'``):
+    defines how to handle function arguments lists that contain newlines;
+    defaults to ``'ignore'``
 
 * **method_chaining_indentation**
 
@@ -827,20 +848,42 @@ Choose from the list of available rules:
     multi-line whitespace or move the semicolon to the new line for chained
     calls; defaults to ``'no_multi_line'``
 
+* **native_constant_invocation** [@Symfony:risky]
+
+  Add leading ``\`` before constant invocation of internal constant to speed
+  up resolving. Constant name match is case-sensitive, except for ``null``,
+  ``false`` and ``true``.
+
+  *Risky rule: risky when any of the constants are namespaced or overridden.*
+
+  Configuration options:
+
+  - ``exclude`` (``array``): list of constants to ignore; defaults to ``['null',
+    'false', 'true']``
+  - ``fix_built_in`` (``bool``): whether to fix constants returned by
+    ``get_defined_constants``. User constants are not accounted in this list
+    and must be specified in the include one; defaults to ``true``
+  - ``include`` (``array``): list of additional constants to fix; defaults to ``[]``
+
 * **native_function_casing** [@Symfony]
 
   Function defined by PHP should be called using the correct casing.
 
-* **native_function_invocation**
+* **native_function_invocation** [@Symfony:risky]
 
-  Add leading ``\`` before function invocation of internal function to speed
-  up resolving.
+  Add leading ``\`` before function invocation to speed up resolving.
 
   *Risky rule: risky when any of the functions are overridden.*
 
   Configuration options:
 
   - ``exclude`` (``array``): list of functions to ignore; defaults to ``[]``
+  - ``include`` (``array``): list of function names or sets to fix. Defined sets are
+    ``@internal`` (all native functions), ``@all`` (all global functions) and
+    ``@compiler_optimized`` (functions that are specially optimized by Zend);
+    defaults to ``['@internal']``
+  - ``scope`` (``'all'``, ``'namespaced'``): only fix function calls that are made
+    within a namespace or fix all; defaults to ``'all'``
 
 * **new_with_braces** [@Symfony]
 
@@ -851,6 +894,13 @@ Choose from the list of available rules:
   Master functions shall be used instead of aliases.
 
   *Risky rule: risky when any of the alias functions are overridden.*
+
+  Configuration options:
+
+  - ``sets`` (a subset of ``['@internal', '@IMAP', '@mbreg', '@all']``): list of
+    sets to fix. Defined sets are ``@internal`` (native functions), ``@IMAP``
+    (IMAP functions), ``@mbreg`` (from ``ext-mbstring``) ``@all`` (all listed
+    sets); defaults to ``['@internal', '@IMAP']``
 
 * **no_alternative_syntax**
 
@@ -1192,6 +1242,15 @@ Choose from the list of available rules:
 
   PHPUnit annotations should be a FQCNs including a root namespace.
 
+* **php_unit_internal_class**
+
+  All PHPUnit test classes should be marked as internal.
+
+  Configuration options:
+
+  - ``types`` (a subset of ``['normal', 'final', 'abstract']``): what types of
+    classes to mark as internal; defaults to ``['normal', 'final']``
+
 * **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky]
 
   Usages of ``->getMock`` and
@@ -1268,6 +1327,20 @@ Choose from the list of available rules:
   - ``style`` (``'annotation'``, ``'prefix'``): whether to use the @test annotation or
     not; defaults to ``'prefix'``
 
+* **php_unit_test_case_static_method_calls**
+
+  Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the
+  same type, either ``$this->``, ``self::`` or ``static::``.
+
+  *Risky rule: risky when PHPUnit methods are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``call_type`` (``'self'``, ``'static'``, ``'this'``): the call type to use for referring
+    to PHPUnit methods; defaults to ``'static'``
+  - ``methods`` (``array``): dictionary of ``method`` => ``call_type`` values that
+    differ from the default strategy; defaults to ``[]``
+
 * **php_unit_test_class_requires_covers**
 
   Adds a default ``@coversNothing`` annotation to PHPUnit test classes that
@@ -1322,7 +1395,7 @@ Choose from the list of available rules:
 
 * **phpdoc_no_empty_return** [@Symfony]
 
-  ``@return`` void and ``@return null`` annotations should be omitted from
+  ``@return void`` and ``@return null`` annotations should be omitted from
   PHPDoc.
 
 * **phpdoc_no_package** [@Symfony]
@@ -1380,12 +1453,24 @@ Choose from the list of available rules:
 
   Docblocks should only be used on structural elements.
 
+* **phpdoc_to_return_type**
+
+  EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts
+  accordingly the function signature. Requires PHP >= 7.0.
+
+  *Risky rule: [1] This rule is EXPERIMENTAL and is not covered with backward compatibility promise. [2] ``@return`` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented. [4] ``@inheritdocs`` support is under construction.*
+
+  Configuration options:
+
+  - ``scalar_types`` (``bool``): fix also scalar types; may have unexpected
+    behaviour due to PHP bad type coercion system; defaults to ``true``
+
 * **phpdoc_trim** [@Symfony]
 
   PHPDoc should start and end with content, excluding the very first and
   last line of the docblocks.
 
-* **phpdoc_trim_after_description**
+* **phpdoc_trim_consecutive_blank_line_separation**
 
   Removes extra blank lines after summary and after description in PHPDoc.
 
@@ -1481,7 +1566,7 @@ Choose from the list of available rules:
 
   Instructions must be terminated with a semicolon.
 
-* **set_type_to_cast**
+* **set_type_to_cast** [@Symfony:risky]
 
   Cast shall be used, not ``settype``.
 
@@ -1674,7 +1759,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.11.1/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.12.2/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It
