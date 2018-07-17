@@ -99,6 +99,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['method_separation'], $fixers['indentation_type']],
             [$fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']],
             [$fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']],
+            [$fixers['no_empty_block'], $fixers['no_trailing_whitespace']],
+            [$fixers['no_empty_comment'], $fixers['no_empty_block']],
             [$fixers['no_empty_comment'], $fixers['no_extra_blank_lines']],
             [$fixers['no_empty_comment'], $fixers['no_trailing_whitespace']],
             [$fixers['no_empty_comment'], $fixers['no_whitespace_in_blank_line']],
