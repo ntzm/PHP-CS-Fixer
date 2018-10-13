@@ -31,6 +31,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer
         'close' => 'closedir',
         'doubleval' => 'floatval',
         'fputs' => 'fwrite',
+        'get_required_files' => 'get_included_files',
         'imap_create' => 'imap_createmailbox',
         'imap_fetchtext' => 'imap_body',
         'imap_header' => 'imap_headerinfo',
@@ -52,6 +53,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer
         'show_source' => 'highlight_file',
         'sizeof' => 'count',
         'strchr' => 'strstr',
+        'user_error' => 'trigger_error',
     ];
 
     /**
@@ -68,6 +70,7 @@ $a = chop($b);
 close($b);
 $a = doubleval($b);
 $a = fputs($b, $c);
+$a = get_required_files();
 ini_alter($b, $c);
 $a = is_double($b);
 $a = is_integer($b);
@@ -81,6 +84,7 @@ $a = pos($array);
 $a = show_source($filename, true);
 $a = sizeof($b);
 $a = strchr($haystack, $needle);
+user_error($message);
 '
                 ),
             ],
